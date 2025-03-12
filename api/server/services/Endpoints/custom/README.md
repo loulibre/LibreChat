@@ -1,4 +1,6 @@
-# LibreChat Custom Endpoints
+# LibreChat Custom Endpoints [EXPERIMENTAL]
+
+> **IMPORTANT NOTICE**: This feature is currently experimental and under active development. It may not work as expected and could change significantly in future releases. Use at your own risk.
 
 This directory contains the implementation of custom endpoint integrations for LibreChat. Custom endpoints allow LibreChat to connect to AI services that don't have a standard OpenAI-compatible API.
 
