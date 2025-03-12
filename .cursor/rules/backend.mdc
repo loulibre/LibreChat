@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description: Backend Development Rules
+globs: *.json
 alwaysApply: false
 ---
 Backend Development

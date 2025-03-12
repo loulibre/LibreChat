@@ -1,11 +1,13 @@
 ---
-description: Frontend Development Rules
+description: Rule for coding agent and for accessing project schema
 globs: *.json
 alwaysApply: false
 ---
+# Your rule content
 Frontend Development
 
-description: Rule for accessing repo-schema.json
+description:
+ Rule for accessing repo-schema.json
 globs: ["repo-schema.json"]
 alwaysApply: true
 
@@ -67,3 +69,6 @@ Key Conventions
 
 Follow Next.js docs for Data Fetching, Rendering, and Routing.
 Follow the documentation at supastarter.dev/docs/nextjs for supastarter specifc patterns.
+
+- You can @ files here
+- You can use markdown but dont have to

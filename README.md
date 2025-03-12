@@ -19,6 +19,75 @@
 
 ## ✨ Get original here: [LibreChat](https://github.com/danny-avila/LibreChat/releases)
 
+# Getting Started
+
+## 🚀 Quick Start Guide for MacOS
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Ollama](https://ollama.ai)
+- [Git](https://git-scm.com/download/mac)
+
+### Step-by-Step Setup
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/danny-avila/LibreChat.git
+   cd LibreChat
+   ```
+
+2. **Create Configuration Files**
+   - Create `librechat.yaml` in the root directory:
+   ```yaml
+   endpoints:
+     ollama:
+       baseURL: http://host.docker.internal:11434
+       models:
+         - llama2
+         - codellama
+         - mistral
+         - mixtral
+         # Add other models you've pulled in Ollama
+         # IMPORTANT: The model names here must match the tags used when pulling models in Ollama
+         # For example: if you run 'ollama pull llama2:13b', use 'llama2:13b' here
+         # See your available models with 'ollama list'
+   ```
+
+   - Create `docker-compose.override.yml`:
+   ```yaml
+   services:
+     api:
+       environment:
+         - OLLAMA_PROXY=true
+   ```
+
+   > 📚 **Documentation Links**
+   > - [Detailed Ollama Setup Guide](https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/ollama)
+   > - [Docker Configuration Guide](https://www.librechat.ai/docs/installation/docker)
+   > - [LibreChat YAML Configuration](https://www.librechat.ai/docs/configuration/librechat_yaml)
+
+3. **Start Docker Services**
+   ```bash
+   docker compose up --build
+   ```
+
+4. **Access LibreChat**
+   - Open [http://localhost:3080](http://localhost:3080) in your browser
+   - Create an account and log in
+   - Select "Ollama" from the model dropdown
+   - Start chatting with your local LLMs!
+
+### Troubleshooting
+- If models aren't visible in LibreChat, ensure Ollama is running and models are pulled:
+  ```bash
+  ollama list
+  ollama pull mistral  # or any other model you want to use
+  ```
+- Check Docker logs if you encounter issues:
+  ```bash
+  docker compose logs -f
+  ```
+
 ## ✨ Features of this clone
 
 ## Project Structure
