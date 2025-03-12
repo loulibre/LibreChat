@@ -1,0 +1,1 @@
+import psycopg2, json; conn = psycopg2.connect("postgresql://myuser:mypassword@db:5432/mydatabase"); cur = conn.cursor(); cur.execute("SELECT metadata FROM langchain_pg_embedding"); print("File IDs in embeddings:"); for row in cur.fetchall(): print(json.dumps(row[0]))

@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # Main LibreChat API service
+  api:
+    environment:
+      # Enable custom endpoints
+      - OLLAMA_PROXY=true
+      # Add other custom endpoint flags here as needed
+      # - CURSOR_PROXY=true
+      
+      # Disable moderation during testing (optional)
+      # - BAN_VIOLATIONS=false
+    
+    # Add dependency on the custom endpoints service
+    depends_on:
+      - custom-endpoints
+
+  # Custom Endpoints Service
+  # This service manages all custom endpoint proxies for LibreChat
+  custom-endpoints:
+    # Use Node.js image
+    image: node:20-alpine
+    container_name: api_custom_endpoints
+    # Restart policy
+    restart: unless-stopped
+    # Mount the custom endpoints directory into the container
+    volumes:
+      - ./api/server/services/Endpoints/custom:/app/custom
+    # Working directory inside the container
+    working_dir: /app
+    # Command to start all enabled proxies
+    # This uses a startup script that can launch multiple proxies
+    command: sh -c "cd /app/custom && ./start-proxies.sh"
+    # Expose proxy ports
+    ports:
+      - "11435:11435"  # Ollama proxy
+      # - "11436:11436"  # Reserved for future proxies (e.g., Cursor)
+    # Network configuration
+    networks:
+      - librechat-network
+    # Health check to ensure the service is running
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:11435/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    # Environment variables
+    environment:
+      # General configuration
+      - NODE_ENV=production
+      - LOG_LEVEL=info  # Options: debug, info, warn, error
+      
+      # Ollama proxy configuration
+      - OLLAMA_ENABLED=true
+      - OLLAMA_HOST=host.docker.internal
+      - OLLAMA_PORT=11434
+      - OLLAMA_PROXY_PORT=11435
+      
+      # Add configuration for other proxies as needed
+      # - CURSOR_ENABLED=false
+      # - CURSOR_HOST=host.docker.internal
+      # - CURSOR_PORT=11437
+      # - CURSOR_PROXY_PORT=11436
+
+# Ensure we're using the same network as the main docker-compose.yml
+networks:
+  librechat-network:
+    external: true 
