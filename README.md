@@ -21,6 +21,31 @@
 
 ## ✨ Features of this clone
 
+## Project Structure
+
+> 📁 `.cursor/rules/` - AI Coding Rules
+> ```
+> .cursor/rules/
+> ├── frontend.mdc .............. Frontend development rules and patterns
+> └── backend.mdc ............... Backend development and API guidelines
+> ```
+
+```
+📁 LibreChat
+├── 📁 [API] api/ ........................... Backend API and server-side code
+├── 📁 [Frontend] client/ ................... Frontend React application
+│   ├── 📁 public/ ......................... Static assets and files
+│   └── 📁 src/ ............................ Source code for the React app
+├── 📁 [Config] config/ .................... Configuration files and settings
+├── 📁 [Modules] packages/ ................. Shared packages and modules
+├── 📁 [Testing] e2e/ ...................... End-to-end testing files
+├── 📁 [Helpers] utils/ .................... Utility functions and helper code
+├── 📁 [IDE] .cursor/ ...................... Cursor IDE configuration
+│   └── 📁 rules/ .......................... AI coding rules and settings
+├── 📁 [Python] .venv/ ..................... Python virtual environment
+└── 📁 [K8s] charts/ ...................... Kubernetes Helm charts
+```
+
 - 🖥️ Modified logo and UI for use in LibreDash project
 
 - 🤖 **AI Model Selection**:  

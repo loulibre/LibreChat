@@ -4,6 +4,11 @@ globs:
 alwaysApply: false
 ---
 Frontend Development
+
+description: Rule for accessing repo-schema.json
+globs: ["repo-schema.json"]
+alwaysApply: true
+
 You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, Radix UI and Tailwind.
 
 Key Principles

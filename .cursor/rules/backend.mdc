@@ -5,6 +5,11 @@ alwaysApply: false
 ---
 Backend Development
 ---
+
+description: Rule for accessing repo-schema.json
+globs: ["repo-schema.json"]
+alwaysApply: true
+
 description: When asked about Python backend-related APIs
 globs: 
 ---
