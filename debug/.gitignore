@@ -1,0 +1,25 @@
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore HAR files (can be large)
+har-reports/*.har
+
+# Ignore analysis output
+har-analysis/*.json
+har-analysis/*.html
+
+# Ignore PID files
+*.pid
+
+# Ignore user-specific files
+test-librechat-api.sh
+create-user.sh
+test-auth-flow.sh
+
+# Ignore any credentials or tokens
+*.token
+token.txt 

@@ -1,0 +1,53 @@
+# LibreChat Configuration for Ollama Integration
+# Copy the relevant sections to your librechat.yaml file
+
+endpoints:
+  # Ollama Configuration
+  ollama:
+    # API Key (Ollama doesn't require an API key, but LibreChat expects one)
+    apiKey: 'dummy'
+    
+    # Base URL for the Ollama proxy
+    # For Docker: Use the container name
+    baseURL: 'http://ollama-proxy:11435'
+    # For manual installation: Use localhost
+    # baseURL: 'http://localhost:11435'
+    
+    # Models configuration
+    models:
+      # Default models to show in the UI
+      # These should match the models you have pulled in Ollama
+      default: ["llama2", "mistral", "gemma"]
+      
+      # Don't fetch models from the API (Ollama's model list format is different)
+      fetch: false
+    
+    # Don't use AI to generate conversation titles
+    titleConvo: false
+    
+    # Display label in the model dropdown
+    modelDisplayLabel: 'Ollama'
+    
+    # Additional options
+    # These are optional and can be omitted
+    
+    # Set a specific temperature for all requests
+    # temperature: 0.7
+    
+    # Set a specific max tokens for all requests
+    # max_tokens: 4096
+    
+    # Set a specific top_p for all requests
+    # top_p: 0.9
+    
+    # Set a specific frequency penalty for all requests
+    # frequency_penalty: 0.0
+    
+    # Set a specific presence penalty for all requests
+    # presence_penalty: 0.0
+
+# Docker configuration
+services:
+  api:
+    environment:
+      - OLLAMA_PROXY=true 

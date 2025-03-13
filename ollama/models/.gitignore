@@ -1,0 +1,16 @@
+# Ignore all model files in the blobs directory
+blobs/*
+!blobs/.gitkeep
+
+# Ignore all model manifest files
+manifests/*
+!manifests/.gitkeep
+
+# Ignore any other large files that might be added
+*.bin
+*.gguf
+*.ggml
+*.safetensors
+*.pt
+*.pth
+*.onnx 

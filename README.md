@@ -209,6 +209,117 @@ Click on the thumbnail to open the video☝️
   - **Documentation:** [docs.librechat.ai](https://docs.librechat.ai)
   - **Blog:** [blog.librechat.ai](https://blog.librechat.ai)
 
+## 🧪 Ollama Integration and Testing
+
+LibreChat includes comprehensive tools for integrating and testing Ollama models. For detailed setup instructions, see the [Ollama integration guide](/ollama/ollama-readme.md).
+
+### Debug Scripts Reference
+
+The `/debug` directory contains valuable tools for troubleshooting Ollama integration:
+
+#### Core Debugging Scripts
+
+- **`ollama-trace.js`**  
+  **Description:** A proxy server that intercepts and logs all requests between LibreChat and Ollama.  
+  **Inputs:** None (configuration is set within the script)  
+  **Outputs:** Creates `ollama-trace.log` with detailed request/response logs  
+  **Notes:** Transforms Ollama's response format to match OpenAI's format, helping debug API compatibility issues.
+
+- **`run-trace.sh`**  
+  **Description:** A shell script that starts the Ollama API tracing proxy.  
+  **Inputs:** None  
+  **Outputs:** Starts the proxy server and keeps it running until terminated  
+  **Notes:** Run this before testing LibreChat with Ollama to capture all API traffic.
+
+- **`har-analyzer.js`**  
+  **Description:** Analyzes HAR files exported from browser developer tools.  
+  **Inputs:** HAR files placed in the `har-reports` directory  
+  **Outputs:** Creates detailed analysis reports in the `har-analysis` directory  
+  **Notes:** Useful for analyzing browser-to-server communication patterns.
+
+#### API Testing Scripts
+
+- **`test-ollama-api.sh`**  
+  **Description:** Tests the Ollama API directly without LibreChat in the middle.  
+  **Inputs:** None  
+  **Outputs:** Test results showing if Ollama API is accessible and functioning  
+  **Notes:** Helps isolate whether issues are with Ollama itself or the integration.
+
+- **`test-librechat-api-example.sh`**  
+  **Description:** Example script to test the LibreChat API endpoints.  
+  **Inputs:** Requires editing to add login credentials  
+  **Outputs:** API responses from LibreChat endpoints  
+  **Notes:** Copy to `test-librechat-api.sh` and add your credentials before using.
+
+- **`create-user-example.sh`**  
+  **Description:** Creates a new user account in LibreChat for testing.  
+  **Inputs:** Requires editing to add new user details  
+  **Outputs:** API responses from user creation process  
+  **Notes:** Copy to `create-user.sh` and customize with new user details.
+
+- **`test-auth-flow-example.sh`**  
+  **Description:** Tests the complete authentication flow in LibreChat.  
+  **Inputs:** Requires editing to add login credentials  
+  **Outputs:** Detailed API responses from each step of the auth flow  
+  **Notes:** Copy to `test-auth-flow.sh` and add your credentials.
+
+#### UI Testing Scripts
+
+- **`start-ui-test.sh`**  
+  **Description:** Sets up the environment for UI testing.  
+  **Inputs:** None  
+  **Outputs:** Status messages and instructions for UI testing  
+  **Notes:** Checks if Ollama is running, verifies model availability, and starts the proxy.
+
+- **`stop-ui-test.sh`**  
+  **Description:** Stops the UI testing environment.  
+  **Inputs:** None  
+  **Outputs:** Status messages confirming shutdown  
+  **Notes:** Optionally stops LibreChat containers if requested.
+
+- **`fix-docker-host-access.sh`**  
+  **Description:** Ensures Docker containers can access services on the host machine.  
+  **Inputs:** None  
+  **Outputs:** Status messages and configuration changes  
+  **Notes:** Handles different operating systems with appropriate configuration for each.
+
+### How to Use These Scripts
+
+1. **For Basic Ollama API Testing:**
+   ```bash
+   cd debug
+   ./test-ollama-api.sh
+   ```
+
+2. **For Tracing API Communication:**
+   ```bash
+   cd debug
+   ./run-trace.sh
+   # In another terminal
+   docker compose restart
+   # Use LibreChat and check ollama-trace.log
+   ```
+
+3. **For Complete UI Testing:**
+   ```bash
+   cd debug
+   ./start-ui-test.sh
+   # Follow on-screen instructions
+   # When done
+   ./stop-ui-test.sh
+   ```
+
+4. **For HAR Analysis:**
+   - Use your browser to export HAR files from the Network tab while using LibreChat
+   - Place the HAR files in the `debug/har-reports` directory
+   - Run the analyzer:
+     ```bash
+     node har-analyzer.js
+     ```
+   - Check the results in the `debug/har-analysis` directory
+
+These debugging tools provide comprehensive visibility into the entire request/response flow between LibreChat, the Ollama proxy, and the Ollama API, making it easier to identify and resolve integration issues.
+
 ---
 
 ## 📝 Changelog

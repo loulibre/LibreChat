@@ -1,0 +1,120 @@
+# Node.js dependencies
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build files
+dist/
+.next/
+out/
+.cache/
+.eslintcache
+
+# Bun dependency lock file
+bun.lockb
+
+# Environment files (Do not commit sensitive credentials)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+librechat.yaml
+
+# MongoDB data files
+data-node/
+meili_data*/
+ollama/*
+!ollama/ollama-readme.md
+!ollama/models/.gitignore
+!ollama/models/blobs/.gitkeep
+!ollama/models/manifests/.gitkeep
+*.wt
+diagnostic.data/
+journal/
+mongod.lock
+storage.bson
+WiredTiger*
+collection-*.wt
+index-*.wt
+
+# Logs and runtime files
+logs/
+*.log
+coverage/
+*.pid
+*.seed
+*.sqlite
+
+# OS/System-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.iml
+
+# Docker & CI/CD temporary files
+docker-compose.override.yml
+deploy-compose.yml
+
+# Playwright and end-to-end test artifacts
+e2e/results/
+e2e/test-results/
+e2e/screenshots/
+e2e/videos/
+e2e/playwright-report/
+
+# Husky hooks (reinstall them using `npm run prepare`)
+.husky/_
+
+# Git ignores existing .gitignore (prevents duplication)
+# .gitignore
+
+# Distribution / packaging
+distro/
+packaging/
+certifi/
+
+# Cache directories
+caches/
+_vendor/
+__pycache__/
+*.py[cod]
+
+# Binary file extensions (common ones)
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+*.bin
+*.dat
+*.db
+*.sqlite
+*.sqlite3
+
+# Compiled files
+*.com
+*.class
+*.o
+*.obj
+
+# Debug files with credentials
+debug/test-librechat-api.sh
+debug/ollama-trace.log
+debug/test-auth-flow.sh
+debug/create-user.sh
+
+# HAR files and analysis (may contain sensitive information)
+debug/har-reports/*.har
+debug/har-analysis/*.json
+debug/har-analysis/*.md
+
+# Test files
+sample_code.js
+token.txt

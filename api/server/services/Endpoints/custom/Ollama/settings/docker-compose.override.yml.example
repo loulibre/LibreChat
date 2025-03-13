@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # Main LibreChat API service
+  api:
+    environment:
+      # Enable Ollama integration
+      - OLLAMA_PROXY=true
+      
+      # Disable moderation during testing (optional)
+      # - BAN_VIOLATIONS=false
+      
+      # Other LibreChat configuration (optional)
+      # - MESSAGE_IP_MAX=40
+      # - MESSAGE_USER_MAX=40
+      # - CONCURRENT_MESSAGE_MAX=2
+    
+    # Add dependency on the Ollama proxy service
+    depends_on:
+      - ollama-proxy
+
+  # Ollama Proxy Service
+  # This service runs the proxy that transforms requests between LibreChat and Ollama
+  ollama-proxy:
+    # Use Node.js image
+    image: node:20-alpine
+    container_name: librechat-ollama-proxy
+    # Restart policy (always, unless-stopped, on-failure)
+    restart: unless-stopped
+    # Mount the proxy code into the container
+    volumes:
+      - ./api/server/services/Endpoints/custom/Ollama/proxy:/app
+    # Working directory inside the container
+    working_dir: /app
+    # Command to run the proxy
+    command: node ollama-proxy.js
+    # Expose the proxy port
+    ports:
+      - "11435:11435"
+    # Network configuration
+    networks:
+      - librechat-network
+    # Health check to ensure the proxy is running
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:11435/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    # Environment variables
+    environment:
+      # Configure the Ollama host
+      # For macOS and Windows: Use host.docker.internal to access the host machine
+      - OLLAMA_HOST=host.docker.internal
+      # For Linux: Use the host's IP address or add --add-host=host.docker.internal:host-gateway to your Docker run command
+      # - OLLAMA_HOST=172.17.0.1
+      
+      # Ollama port (default: 11434)
+      - OLLAMA_PORT=11434
+      
+      # Proxy port (default: 11435)
+      - PROXY_PORT=11435
+      
+      # Logging configuration
+      - NODE_ENV=production
+      - LOG_LEVEL=info  # Options: debug, info, warn, error
+
+# Ensure we're using the same network as the main docker-compose.yml
+networks:
+  librechat-network:
+    external: true 

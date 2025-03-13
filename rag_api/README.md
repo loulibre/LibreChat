@@ -14,6 +14,7 @@ The API will evolve over time to employ different querying/re-ranking methods, e
 - **Document Management**: Methods for adding, retrieving, and deleting documents.
 - **Vector Store**: Utilizes Langchain's vector store for efficient document retrieval.
 - **Asynchronous Support**: Offers async operations for enhanced performance.
+- **Multiple Embedding Providers**: Support for OpenAI, Azure, HuggingFace, Ollama, and Bedrock.
 
 ## Integration with LibreChat
 
@@ -108,6 +109,69 @@ volumes:
    - Upload a file using the file upload button
    - Ask questions about the content of the uploaded file
 
+## Using Ollama for Embeddings
+
+The RAG API supports using Ollama as an embeddings provider, which allows you to use local models for generating embeddings without relying on external APIs.
+
+### Setting Up Ollama with Qwen2
+
+To use Ollama with the Qwen2 model for embeddings:
+
+1. Make sure Ollama is installed and running. You can download it from [ollama.ai](https://ollama.ai).
+
+2. Pull the Qwen2 model for embeddings:
+   ```bash
+   ollama pull aroxima/gte-qwen2-1.5b-instruct
+   ```
+
+3. Configure your RAG API to use Ollama with Qwen2 by setting these environment variables:
+   ```yaml
+   - EMBEDDINGS_PROVIDER=ollama
+   - EMBEDDINGS_MODEL=aroxima/gte-qwen2-1.5b-instruct
+   - OLLAMA_BASE_URL=http://ollama:11434  # For Docker setup
+   ```
+   
+   For local development without Docker, use:
+   ```
+   OLLAMA_BASE_URL=http://localhost:11434
+   ```
+
+4. Example docker-compose configuration with Ollama:
+   ```yaml
+   rag_api:
+     image: ghcr.io/danny-avila/librechat-rag-api-dev:latest
+     container_name: librechat_rag_api
+     # ... other settings
+     environment:
+       # ... other environment variables
+       - EMBEDDINGS_PROVIDER=ollama
+       - EMBEDDINGS_MODEL=aroxima/gte-qwen2-1.5b-instruct
+       - OLLAMA_BASE_URL=http://ollama:11434
+     depends_on:
+       - db
+       - ollama
+   
+   ollama:
+     image: ollama/ollama:latest
+     container_name: ollama
+     ports:
+       - "11434:11434"
+     volumes:
+       - ollama_data:/root/.ollama
+   
+   volumes:
+     ollama_data:
+   ```
+
+5. Verify that Ollama is working correctly by checking the RAG API logs after startup.
+
+### Advantages of Using Ollama with Qwen2
+
+- **Privacy**: All embedding generation happens locally, with no data sent to external APIs
+- **Cost-effective**: No usage charges for API calls
+- **Customizable**: Can use different models based on your specific needs
+- **Performance**: The Qwen2 model provides high-quality embeddings for improved retrieval accuracy
+
 ## Setup
 
 ### Getting Started
@@ -164,6 +228,10 @@ The following environment variables are required to run the application:
     - huggingfacetei: "http://huggingfacetei:3000". Hugging Face TEI uses model defined on TEI service launch.
     - ollama: "nomic-embed-text"
     - bedrock: "amazon.titan-embed-text-v1"
+    - **Recommended Ollama Models**
+    - aroxima/gte-qwen2-1.5b-instruct: High-quality embeddings with good performance
+    - nomic-embed-text: Default Ollama embedding model
+- `OLLAMA_BASE_URL`: (Optional) The base URL for the Ollama API. Defaults to `http://ollama:11434` for Docker setups. Use `http://localhost:11434` for local development.
 - `RAG_AZURE_OPENAI_API_VERSION`: (Optional) Default is `2023-05-15`. The version of the Azure OpenAI API.
 - `RAG_AZURE_OPENAI_API_KEY`: (Optional) The API key for Azure OpenAI service.
     - Note: `AZURE_OPENAI_API_KEY` will work but `RAG_AZURE_OPENAI_API_KEY` will override it in order to not conflict with LibreChat setting.
@@ -171,7 +239,6 @@ The following environment variables are required to run the application:
     - Example: `https://YOUR_RESOURCE_NAME.openai.azure.com`.
     - Note: `AZURE_OPENAI_ENDPOINT` will work but `RAG_AZURE_OPENAI_ENDPOINT` will override it in order to not conflict with LibreChat setting.
 - `HF_TOKEN`: (Optional) if needed for `huggingface` option.
-- `OLLAMA_BASE_URL`: (Optional) defaults to `http://ollama:11434`.
 - `ATLAS_SEARCH_INDEX`: (Optional) the name of the vector search index if using Atlas MongoDB, defaults to `vector_index`
 - `MONGO_VECTOR_COLLECTION`: Deprecated for MongoDB, please use `ATLAS_SEARCH_INDEX` and `COLLECTION_NAME`
 - `AWS_DEFAULT_REGION`: (Optional) defaults to `us-east-1`
@@ -206,6 +273,11 @@ Make sure to set these environment variables before running the application. You
 5. **OpenAI API Issues**:
    - Verify that the OpenAI API key is valid and has sufficient credits.
    - Check that the embedding model specified is available for your account.
+
+6. **Ollama Integration Issues**:
+   - Ensure Ollama is running and accessible at the URL specified in `OLLAMA_BASE_URL`.
+   - Verify that the model specified in `EMBEDDINGS_MODEL` has been pulled to your Ollama instance.
+   - Check network connectivity between the RAG API container and Ollama if using Docker.
 
 ### Use Atlas MongoDB as Vector Database
 
